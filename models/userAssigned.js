@@ -19,14 +19,14 @@ let UserAssigned = sequelize.define('UserAssigned', {
         type: Sequelize.INTEGER,
         references:{
             model: Client,
-            key: id
+            key: "id"
         }
     },
     user:{
         type: Sequelize.INTEGER,
         references:{
             model: User, 
-            key: id
+            key: "id"
         }
     }
 });

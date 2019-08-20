@@ -67,4 +67,43 @@ function editUser(req, res) {
     }
 }
 
-module.exports = { saveUser, editUser };
+function getUser(req, res){
+    let userId = req.params.id;
+    if(userId!==null&&userId!==''&&userId!==undefined){
+        User.findOne({where:{id: userId}}).then(userFound=>{
+            if(userFound){
+                res.status(200).send(userFound);
+            }else{
+                res.status(200).send({errorCode: 404, message: 'El usuario no se ha encontrado.'})
+            }
+        });
+    }else{
+        res.status(200).send({errorCode: 403, message: 'Ingrese el id del usuario.'});
+    }
+}
+
+function getUsers(req, res){
+    User.findAll().then(usersFound=>{
+        if(usersFound){
+            res.status(200).send(usersFound);
+        }else{
+            res.status(200).send({errorCode:404, message: 'No se han encontrado usuarios'});
+        }
+    })
+}
+
+function deleteUsers(req, res){
+    let userId = req.params.id;
+    
+    if(userId!==''&&userId!==null&&userId!==undefined){
+        User.destroy({where:{id:userId}}).then(userRemoved=>{
+            if(userRemoved){
+                res.status(200).send({message: 'Usuario removido'});
+            }else{
+                res.status(200).send({errorCode: 404, message: 'Usuario no removido.'});
+            }
+        });
+    }
+}
+
+module.exports = { saveUser, editUser, getUser, getUsers, deleteUsers };

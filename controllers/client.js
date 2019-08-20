@@ -88,11 +88,11 @@ function deleteClient(req, res){
             if(clientRemoved){
                 res.status(200).send({message:'Cliente eliminado.'});
             }else{
-                res.status(200).send({errorCode:404, message:'El cliente no se ha eliminado.'})
+                res.status(200).send({errorCode:404, message:'El cliente no se ha eliminado.'});
             }
-        })
+        });
     }else{
-        res.status(200).send({erroCode:403, message: 'Ingrese el id del cliente.'})
+        res.status(200).send({erroCode:403, message: 'Ingrese el id del cliente.'});
     }
 }
 

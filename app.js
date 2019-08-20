@@ -8,6 +8,7 @@ let app = express();
 let client_routes = require('./routes/client');
 let credential_routes = require('./routes/webfleetCredentials');
 let user_routes = require('./routes/user');
+let user_assigned_routes = require('./routes/userAssigned');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -23,5 +24,6 @@ app.use((req, res, next)=>{
 app.use('/api', client_routes);
 app.use('/api', credential_routes);
 app.use('/api', user_routes);
+app.use('/api', user_assigned_routes);
 
 module.exports = app;
