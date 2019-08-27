@@ -19,17 +19,17 @@ let Permissions = sequelize.define('Permissions', {
         type: Sequelize.INTEGER,
         references:{
             model: WebfleetCredentials,
-            key: id
+            key: 'id'
         }
     },
     service:{
         type: Sequelize.INTEGER,
         references:{
             model: Service,
-            key: id
+            key: 'id'
         }
     }
 })
  
 sequelize.sync();
-module.exports = WebfleetCredentials;
+module.exports = Permissions;

@@ -96,4 +96,21 @@ function getCredentials(req, res){
     });
 }
 
-module.exports = { saveCredentials, editCredentials, getCredential, getCredentialsByClient, getCredentials };
+function login(req, res){
+    let params = req.body;
+    let user = params.user;
+    let password = params.password;
+    let account = params.account;
+
+    if(user!==''&&user!==null&&user!==undefined&&
+       password!==''&&password!==null&&password!==undefined&&
+       account!==''&&account!==null&&account!==undefined){
+           Credentials.findOne({where:{user:user, password:password, account:account}}).then(credentialsFound => {
+                res.status(200).send(credentialsFound);
+           });
+       }else{
+           res.status(200).send({errorCode:403, message: 'Ingrese todos los datos'});
+       }
+}
+
+module.exports = { saveCredentials, editCredentials, getCredential, getCredentialsByClient, getCredentials, login };
