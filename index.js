@@ -14,7 +14,7 @@ sequelize.authenticate().then(()=>{
         console.log('App running on port: ' + port);
     });
 }).catch(err => {
-    console.err('Unable to connect to the database', err);
+    console.log('Unable to connect to the database', err);
 });
 
 
