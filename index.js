@@ -9,8 +9,6 @@ const sequelize =  new Sequelize('usuarios', 'sa', 'LuisEduardo1997', {
     dialect: 'mssql'
 });
 
-sequelize.query(`CREATE DATABASE usuarios`);
-
 sequelize.authenticate().then(()=>{
     console.log('Connection to BD established successfully.');
     app.listen(port, function(){
@@ -18,8 +16,6 @@ sequelize.authenticate().then(()=>{
     });
 }).catch(err => {
     console.log('Unable to connect to the database', err);
-    console.log('----------------------------------------------------------------------');
-    console.log('--------------creating DB---------------------------------------------');
 });
 
 
