@@ -4,7 +4,7 @@ let app = require('./app');
 let port = 8002;
 const Sequelize = require('sequelize');
 
-const sequelize =  new Sequelize('usuarios', 'sa', 'LuisEduardo1997', {
+const sequelize =  new Sequelize('Usuarios1', 'sa', 'LuisEduardo1997', {
     host: 'localhost',
     dialect: 'mssql'
 });

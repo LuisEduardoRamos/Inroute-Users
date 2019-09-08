@@ -2,8 +2,10 @@
 
 let Client = require('../models/client');
 let Sequelize = require('sequelize');
+let fs = require('fs');
+let path = require('path');
 
-const sequelize = new Sequelize("usuarios", "sa", "LuisEduardo1997", {
+const sequelize = new Sequelize("Usuarios1", "sa", "LuisEduardo1997", {
     host: "localhost",
     dialect: "mssql"
 });
@@ -15,6 +17,7 @@ function saveClient(req, res){
     client.name = params.name;
     client.email = params.email;
     client.password = params.password;
+    client.image = '';
 
     console.log(client)
     if(client.name!==null&&client.email!==null&&client.password!==null&&client.name!==''&&client.email!==''
@@ -96,4 +99,45 @@ function deleteClient(req, res){
     }
 }
 
-module.exports = { saveClient, editClient, getClient, getClients, deleteClient };
+function uploadImage(req, res){
+    let userId = req.params.id;
+    let file_name = 'No subido...';
+    if(req.files){
+        let file_path = req.files.image.path;
+        let file_split = file_path.split('/');
+        let file_name = file_split[1];
+
+        let ext_split = file_name.split('.');
+        let file_ext = ext_split[1];
+        if(file_ext == 'png'|| file_ext == 'jpg'|| file_ext == 'gif'){
+            sequelize.sync().then(()=>{
+                Client.update({image: file_name}, {where:{id: userId}}).then(userUpdated => {
+                    if(userUpdated){
+                        console.log(userUpdated)
+                        res.status(200).send(userUpdated);
+                    }else{
+                        res.status(200).send({message: 'El cliente no se ha actualizado'});
+                    }
+                });
+            });  
+        }else{
+            res.status(200).send({errorCode: 403, message: 'Formato no aceptado'});
+        }
+    }else{
+        res.status(200).send({errorCode: 403, message: 'Ingrese una foto'});
+    }
+}
+
+function getImageFile(req, res){
+    let imageFile = req.params.imageFile;
+    let path_file = "./uploads/" + imageFile;
+    fs.exists(path_file, function(exists){
+        if (exists) {
+            res.sendFile(path.resolve(path_file));
+        }else {
+            res.status(200).send({ message: "No existe la imagen..." });
+        }
+    });
+}
+
+module.exports = { saveClient, editClient, getClient, getClients, deleteClient, uploadImage, getImageFile };

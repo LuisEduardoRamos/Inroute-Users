@@ -3,7 +3,7 @@
 let User = require("../models/user");
 let Sequelize = require("sequelize");
 
-const sequelize = new Sequelize("usuarios", "sa", "LuisEduardo1997", {
+const sequelize = new Sequelize("Usuarios1", "sa", "LuisEduardo1997", {
   host: "localhost",
   dialect: "mssql"
 });
@@ -42,25 +42,6 @@ function saveUser(req, res) {
   } else {
     res.status(200).send({ errorCode: 403, message: "Ingrese todos los datos del usuario" });
   }
-}
-
-function Login(req, res){
-    let email, password;
-    let params = req.body;
-    email = params.email;
-    password = params.password;
-
-    if(email!==''&&email!==null&&email!==undefined&&password!==''&&password!==null&&password!==undefined){
-        User.findOne({where:{email:email, password:password}}).then(userFound => {
-            if(userFound){
-                res.status(200).send(userFound);
-            }else{
-                res.status(200).send({errorCode: 404, message: 'Las credenciales no coinciden'});
-            }
-        });
-    }else{
-        res.status(200).send({errorCode: 403, message: 'Ingrese las credenciales'});
-    }
 }
 
 function editUser(req, res) {
@@ -125,4 +106,37 @@ function deleteUsers(req, res){
     }
 }
 
-module.exports = { saveUser, editUser, getUser, getUsers, deleteUsers, Login };
+function uploadImage(req, res){
+    let userId = req.params.id;
+    let file_name = 'No subido...';
+    if(req.files){
+        let file_path = req.files.image.path;
+        let file_split = file_path.split('/');
+        let file_name = file_split[1];
+
+        let ext_split = file_name.split('.');
+        let file_ext = ext_split[1];
+
+        if(file_ext == 'png'|| file_ext == 'jpg'|| file_ext == 'gif'){
+            sequelize.sync().then(()=>{
+                User.update({image: file_name}, {where:{id: userId}}).then(userUpdated => {
+                    if(userUpdated){
+                        res.status(200).send({message: 'Imagen actualizada'});
+                    }else{
+                        res.status(200).send({message: 'El usuario no se ha actualizado'});
+                    }
+                });
+            });  
+        }else{
+            res.status(200).send({errorCode: 403, message: 'Formato no aceptado'});
+        }
+    }else{
+        res.status(200).send({errorCode: 403, message: 'Ingrese una foto'});
+    }
+}
+
+// function getImage(req, res){
+//     let imageFile = req.params.imageFile
+// }
+
+module.exports = { saveUser, editUser, getUser, getUsers, deleteUsers, uploadImage };

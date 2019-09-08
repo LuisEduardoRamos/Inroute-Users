@@ -3,7 +3,7 @@
 let Service = require('../models/service');
 let Sequelize = require('sequelize');
 
-const sequelize = new Sequelize("usuarios", "sa", "LuisEduardo1997", {
+const sequelize = new Sequelize("Usuarios1", "sa", "LuisEduardo1997", {
     host: "localhost",
     dialect: "mssql"
 });
