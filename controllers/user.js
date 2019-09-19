@@ -135,8 +135,26 @@ function uploadImage(req, res){
     }
 }
 
+function userLogin(req, res){
+    let password = req.body.password;
+    let email = req.body.email;
+    console.log(req.body)
+
+    if(password!==null&&password!==''&&password!==undefined&&email!==null&&email!==''&&email!==undefined){
+        User.findOne({where:{password:password,email:email}}).then(userFound=>{
+            if(userFound){
+                res.status(200).send(userFound);
+            }else{
+                res.status(200).send({message: 'No se ha encontrado el usuario', errorCode: 404});
+            }
+        });
+    }else{
+        res.status(200).send({message: 'Ingrese todas las credenciales.', errorCode: 403});
+    }
+}
+
 // function getImage(req, res){
 //     let imageFile = req.params.imageFile
 // }
 
-module.exports = { saveUser, editUser, getUser, getUsers, deleteUsers, uploadImage };
+module.exports = { saveUser, editUser, getUser, getUsers, deleteUsers, uploadImage, userLogin };

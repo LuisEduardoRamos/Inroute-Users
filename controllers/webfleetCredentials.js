@@ -1,6 +1,7 @@
 'use strict'
 
 let Credentials = require('../models/webfleetCredentials');
+let Client = require('../models/client');
 let Sequelize = require('sequelize');
 
 const sequelize = new Sequelize("Usuarios1", "sa", "LuisEduardo1997", {
@@ -106,7 +107,9 @@ function login(req, res){
        password!==''&&password!==null&&password!==undefined&&
        account!==''&&account!==null&&account!==undefined){
            Credentials.findOne({where:{user:user, password:password, account:account}}).then(credentialsFound => {
-                res.status(200).send(credentialsFound);
+                Client.findOne({where:{id:credentialsFound.client}}).then(clientFound => {
+                    res.status(200).send([credentialsFound, clientFound]);
+                })
            });
        }else{
            res.status(200).send({errorCode:403, message: 'Ingrese todos los datos'});
