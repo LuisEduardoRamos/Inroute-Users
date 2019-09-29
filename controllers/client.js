@@ -4,6 +4,8 @@ let Client = require('../models/client');
 let Sequelize = require('sequelize');
 let fs = require('fs');
 let path = require('path');
+let jwt = require('../services/jwt')
+let bcrypt = require('bcrypt-nodejs')
 
 const sequelize = new Sequelize("Usuarios1", "sa", "LuisEduardo1997", {
     host: "localhost",
@@ -19,21 +21,29 @@ function saveClient(req, res){
     client.password = params.password;
     client.image = '';
 
-    console.log(client)
-    if(client.name!==null&&client.email!==null&&client.password!==null&&client.name!==''&&client.email!==''
-    &&client.password!==''&&client.name!==undefined&&client.email!==undefined&&client.password!==undefined){
-        sequelize.sync().then(()=>{
-            Client.create(client).then(clientCreated=>{
-                if(clientCreated){
-                    res.status(200).send(clientCreated)
-                }else{
-                    res.status(200).send({errorCode: 404, message:'El cliente nos se ha creado'})
-                }
-            });
+    if(params.password){
+        bcrypt.hash(params.password, null, null, (err, hash)=>{
+            client.password = hash;
+            console.log(client)
+            if(client.name!==null&&client.email!==null&&client.password!==null&&client.name!==''&&client.email!==''
+            &&client.password!==''&&client.name!==undefined&&client.email!==undefined&&client.password!==undefined){
+                sequelize.sync().then(()=>{
+                    Client.create(client).then(clientCreated=>{
+                        if(clientCreated){
+                            res.status(200).send(clientCreated)
+                        }else{
+                            res.status(200).send({errorCode: 404, message:'El cliente nos se ha creado'})
+                        }
+                    });
+                });
+            }else{
+                res.status(200).send({errorCode:403, message: 'Introduzca todos los datos'})
+            }
         });
     }else{
-        res.status(200).send({errorCode:403, message: 'Introduzca todos los datos'})
+        res.status(200).send({errorCode: 403, message: 'Ingrese la contraseña'})
     }
+    
 }
 
 function editClient(req, res){

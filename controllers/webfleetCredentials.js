@@ -2,6 +2,7 @@
 
 let Credentials = require('../models/webfleetCredentials');
 let Client = require('../models/client');
+let jwt = require('../services/jwt');
 let Sequelize = require('sequelize');
 
 const sequelize = new Sequelize("Usuarios1", "sa", "LuisEduardo1997", {
@@ -18,7 +19,6 @@ function saveCredentials(req, res){
     credentials.user = params.user;
     credentials.password = params.password;
     credentials.apiKey = params.apiKey;
-
     if(params.client!==null&&params.client!==''&&params.client!==undefined&&
        params.account!==null&&params.account!==''&&params.account!==undefined&& 
        params.user!==null&&params.user!==''&&params.user!==undefined&&
@@ -108,7 +108,7 @@ function login(req, res){
        account!==''&&account!==null&&account!==undefined){
            Credentials.findOne({where:{user:user, password:password, account:account}}).then(credentialsFound => {
                 Client.findOne({where:{id:credentialsFound.client}}).then(clientFound => {
-                    res.status(200).send([credentialsFound, clientFound]);
+                    res.status(200).send([credentialsFound, clientFound, {token: jwt.createTokenCredentials(credentialsFound)}]);
                 })
            });
        }else{

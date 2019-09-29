@@ -2,6 +2,8 @@
 
 let User = require("../models/user");
 let Sequelize = require("sequelize");
+let jwt = require('../services/jwt')
+let bcrypt = require('bcrypt-nodejs')
 
 const sequelize = new Sequelize("Usuarios1", "sa", "LuisEduardo1997", {
   host: "localhost",
@@ -31,13 +33,17 @@ function saveUser(req, res) {
     user.password !== undefined
   ) {
     sequelize.sync().then(() => {
-        User.create(user).then(userCreated=>{
-            if(userCreated){
-                res.status(200).send(userCreated);
-            }else{
-                res.status(200).send({errorCode:404, message: 'El usuario no se ha guardado.'});
-            }
-        });
+        bcrypt.hash(params.password, null, null, (err, hash)=>{
+            user.password = hash
+            User.create(user).then(userCreated=>{
+                if(userCreated){
+                    res.status(200).send(userCreated);
+                }else{
+                    res.status(200).send({errorCode:404, message: 'El usuario no se ha guardado.'});
+                }
+            });
+        })
+        
     });
   } else {
     res.status(200).send({ errorCode: 403, message: "Ingrese todos los datos del usuario" });
@@ -141,10 +147,18 @@ function userLogin(req, res){
     console.log(req.body)
 
     if(password!==null&&password!==''&&password!==undefined&&email!==null&&email!==''&&email!==undefined){
-        User.findOne({where:{password:password,email:email}}).then(userFound=>{
+        User.findOne({where:{email:email}}).then(userFound=>{
+            console.log(userFound)
             if(userFound){
-                res.status(200).send(userFound);
-            }else{
+                bcrypt.compare(password, userFound.password, (err, checked)=>{
+                    if(checked){
+                        
+                            res.status(200).send({user:userFound, token: jwt.createTokenUser(userFound)})
+
+                    }
+                })
+            }
+            else{
                 res.status(200).send({message: 'No se ha encontrado el usuario', errorCode: 404});
             }
         });
