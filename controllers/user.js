@@ -5,11 +5,10 @@ let Sequelize = require("sequelize");
 let jwt = require('../services/jwt')
 let bcrypt = require('bcrypt-nodejs')
 
-const sequelize = new Sequelize("Usuarios", "SA", "Inroute2019", {
-  host: "localhost",
-  dialect: "mssql"
+const sequelize = new Sequelize("Usuarios", "sa", "LuisEduardo1997", {
+    host: "localhost",
+    dialect: "mssql"
 });
-
 function saveUser(req, res) {
   let params = req.body;
   let user = {};
