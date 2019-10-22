@@ -1,8 +1,8 @@
 'use strict'
 
-let Permissions = require('../models/permissions');
-let WebfleetCredentials = require('../models/webfleetCredentials');
 let PermitService = require('../models/permitService');
+let Client = require('../models/client');
+let Service = require('../models/service');
 let Sequelize = require('sequelize');
 
 const sequelize = new Sequelize("Usuarios", "SA", "Inroute2019", {
@@ -10,30 +10,33 @@ const sequelize = new Sequelize("Usuarios", "SA", "Inroute2019", {
     dialect: "mssql"
 });
 
-function savePermission(req, res){
-    let permission = {};
+function savePermitPermission(req, res){
+    let permitPermission = {};
     let params = req.body;
-    permission.credencial = params.credencial;
-    permission.servicioPermitido = params.servicioPermitido;
-    if(permission.credencial!==''&&permission.credencial!==undefined&&permission.credencial!==null&&
-       permission.servicioPermitido!==''&&permission.servicioPermitido!==undefined&&permission.servicioPermitido!==null){
-        WebfleetCredentials.findOne({where:{id:permission.credencial}}).then(credentialsFound => {
-            if(credentialsFound){
-                PermitService.findOne({where:{id:permission.servicioPermitido}}).then(serviceFound => {
+    permitPermission.servicio = params.servicio;
+    permitPermission.cliente = params.cliente;
+    permitPermission.webfleet = params.webfleet;
+    permitPermission.fecha = params.fecha;
+    if(permitPermission.servicio!==''&&permitPermission.servicio!==undefined&&permitPermission.servicio!==null&&
+       permitPermission.cliente!==''&&permitPermission.cliente!==undefined&&permitPermission.cliente!==null&&
+       permitPermission.fecha!==''&&permitPermission.fecha!==undefined&&permitPermission.fecha!==null){
+        Client.findOne({where:{id:permitPermission.cliente}}).then(clientFound => {
+            if(clientFound){
+                Service.findOne({where:{id:permitPermission.servicio}}).then(serviceFound => {
                     if(serviceFound){
-                        Permissions.create(permission).then(permissionCreated => {
+                        PermitService.create(permitPermission).then(permissionCreated => {
                             if(permissionCreated){
                                 res.status(200).send(permissionCreated);
                             }else{
-                                res.status(200).send({errorCode: 404, message: 'El permiso no se ha asignado.'});
+                                res.status(200).send({errorCode: 404, message: 'Error al asignar el permiso.'});
                             }
                         });
                     }else{
-                        res.status(200).send({errorCode: 404, message: 'El servicio no coincide.'});
+                        res.status(200).send({errorCode: 404, message: 'Nos se encontro ningún servicio con ese id.'});
                     }
                 });
             }else{
-                res.status(200).send({errorCode: 404, message: 'Las credenciales no coinciden.'});
+                res.status(200).send({errorCode: 404, message: 'No se encontro ningun cliente con ese id.'});
             }
         });
     }else{
@@ -46,17 +49,8 @@ function editPermission(req, res){
     let changes = req.body;
     let aux1 = true;
     let aux2 = true;
-    if(changes.credencial!==''&&changes.credencial!==null&&changes.credencial!==undefined){
-        WebfleetCredentials.findOne({where:{id:changes.credencial}}).then(credentialsFound => {
-            if(credentialsFound){
-                aux1 = true;
-            }else{
-                aux1 = false;
-            }
-        });
-    }
-    if(changes.servicioPermitido!==null&&changes.servicioPermitido!==''&&changes.servicioPermitido!==undefined){
-        Service.findOne({where:{id:changes.servicioPermitido}}).then(serviceFound => {
+    if(changes.servicio!==null&&changes.servicio!==''&&changes.servicio!==undefined){
+        Service.findOne({where:{id:changes.servicio}}).then(serviceFound => {
             if(serviceFound){
                 aux2 = true;
             }else{
@@ -64,26 +58,25 @@ function editPermission(req, res){
             }
         });
     }
-
     if(aux1==true&&aux2==true){
-        Permissions.update(changes, {where:{id:id}}).then(permissionUpdated=>{
+        PermitService.update(changes, {where:{id:id}}).then(permissionUpdated=>{
             if(permissionUpdated){
-                Permissions.findOne({where:{id:id}}).then(permissionFound => {
+                PermitService.findOne({where:{id:id}}).then(permissionFound => {
                     res.status(200).send(permissionFound);
                 });
             }else{
-                res.status(200).send({errorCode: 403, message: 'El permiso no se encuentra'});
+                res.status(200).send({errorCode: 403, message: 'No se encontro un permiso con ese id.'});
             }
         });
     }else{
-        res.status(200).send({errorCode:403, message: 'El servicio o credenciales no existe.'});
+        res.status(200).send({errorCode:403, message: 'El servicio no existe.'});
     }
 }
 
 function getPermission(req, res){
     let id = req.params.id;
     if(id!==''&&id!==undefined&&id!==null){
-        Permissions.findOne({where:{id:id}}).then(permissionFound => {
+        PermitService.findOne({where:{id:id}}).then(permissionFound => {
             if(permissionFound){
                 res.status(200).send(permissionFound);
             }else{
@@ -96,7 +89,7 @@ function getPermission(req, res){
 }
 
 function getPemrissions(req, res){
-    Permissions.findAll().then(permissionsFound => {
+    PermitService.findAll().then(permissionsFound => {
         if(permissionsFound){
             res.status(200).send(permissionsFound);
         }else{
@@ -108,7 +101,7 @@ function getPemrissions(req, res){
 function getPermissionsByClient(req, res){
     let id = req.params.id;
     if(id!==''&&id!==undefined&&id!==null){
-        Permissions.findAll({where:{credencial:id}}).then(permissionFound => {
+        PermitService.findAll({where:{cliente:id}}).then(permissionFound => {
             if(permissionFound){
                 res.status(200).send(permissionFound);
             }else{
@@ -123,7 +116,7 @@ function getPermissionsByClient(req, res){
 function deletePermission(req, res){
     let id = req.params.id;
     if(id!==''&&id!==undefined&&id!==null){
-        Permissions.destroy({where:{id:id}}).then(permissionRemoved => {
+        PermitService.destroy({where:{id:id}}).then(permissionRemoved => {
             if(permissionRemoved){
                 res.status(200).send(permissionRemoved);
             }else{
@@ -135,4 +128,4 @@ function deletePermission(req, res){
     }
 }
 
-module.exports = { savePermission, editPermission, getPemrissions, getPermission, getPermissionsByClient, deletePermission };
+module.exports = { savePermitPermission, editPermission, getPemrissions,getPermission, getPermissionsByClient, deletePermission };

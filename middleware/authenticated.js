@@ -2,7 +2,7 @@
 
 var jwt = require('jwt-simple')
 var moment = require('moment')
-var secret = 'inrouteusuarios'
+var secret = 'inrouteUsuarios'
 
 exports.ensureAuth = function(req, res, next){
     if(!req.headers.authorization){

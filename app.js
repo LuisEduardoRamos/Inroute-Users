@@ -11,6 +11,7 @@ let user_routes = require('./routes/user');
 let user_assigned_routes = require('./routes/userAssigned');
 let service_routes = require('./routes/service');
 let permission_routes = require('./routes/permissions');
+let permmitServices_routes = require('./routes/permitServices');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -29,5 +30,6 @@ app.use('/api', user_routes);
 app.use('/api', user_assigned_routes);
 app.use('/api', service_routes);
 app.use('/api', permission_routes);
+app.use('/api', permmitServices_routes);
 
 module.exports = app;

@@ -3,29 +3,19 @@
 let Sequelize = require('sequelize');
 let Client = require('./client')
 
-const sequelize =  new Sequelize('Usuarios1', 'sa', 'LuisEduardo1997', {
+
+const sequelize =  new Sequelize('Usuarios', 'SA', 'Inroute2019', {
     host: 'localhost',
     dialect: 'mssql'
 });
 
-let WebfleetCredentials = sequelize.define('WebfleetCredentials', {
+let WebfleetCredentials = sequelize.define('Credencial', {
     id:{
         type: Sequelize.INTEGER, 
         primaryKey: true, 
         autoIncrement: true
     },
-    client:{
-        type: Sequelize.INTEGER,
-        references:{
-            model: Client,
-            key: 'id'
-        }
-    },
-    account:{
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    user:{
+    usuario:{
         type: Sequelize.STRING,
         allowNull: false
     },
@@ -33,9 +23,12 @@ let WebfleetCredentials = sequelize.define('WebfleetCredentials', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    apiKey:{
-        type: Sequelize.STRING, 
-        allowNull: false
+    cliente:{
+        type: Sequelize.INTEGER,
+        references:{
+            model: Client,
+            key: 'id'
+        }
     }
 });
 

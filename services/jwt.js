@@ -1,7 +1,7 @@
 "use strict";
 var jwt = require("jwt-simple");
 var moment = require("moment");
-var secret = "inrouteusuarios";
+var secret = "inrouteUsuarios";
 
 exports.createTokenUser = function(user) {
   var payload = {
@@ -22,11 +22,10 @@ exports.createTokenUser = function(user) {
 
 exports.createTokenCredentials = function(credentials) {
   var payload = {
-    id: credentials.id,
-    client: credentials.client,
-    account: credentials.account, 
-    user: credentials.user,
+    cuenta: credentials.cuenta,
+    usuario: credentials.usuario, 
     password: credentials.password,
+    apikey: credentials.apikey,
     iat: moment().unix(),
     exp: moment()
       .add(30, "days")

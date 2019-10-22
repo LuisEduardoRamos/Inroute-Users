@@ -3,16 +3,16 @@
 let Service = require('../models/service');
 let Sequelize = require('sequelize');
 
-const sequelize = new Sequelize("Usuarios1", "sa", "LuisEduardo1997", {
+const sequelize = new Sequelize("Usuarios", "SA", "Inroute2019", {
     host: "localhost",
     dialect: "mssql"
 });
 
 function saveService(req, res){
-    let name = req.body.name;
-    if(name!==null&&name!==''&&name!==undefined){
+    let nombre = req.body.nombre;
+    if(nombre!==null&&nombre!==''&&nombre!==undefined){
         sequelize.sync().then(()=>{
-            Service.create({name: name}).then(serviceCreated=>{
+            Service.create({nombre: nombre}).then(serviceCreated=>{
                 if(serviceCreated){
                     res.status(200).send(serviceCreated);
                 }else{
@@ -27,9 +27,9 @@ function saveService(req, res){
 
 function editUser(req, res){
     let id = req.params.id;
-    let name = req.body.name;
-    if(name!==''&&name!==null&name!==undefined&&id!==''&&id!==null&&id!==undefined){
-        Service.update({name:name}, {where:{id:id}}).then(serviceUpdated => {
+    let nombre = req.body.nombre;
+    if(nombre!==''&&nombre!==null&nombre!==undefined&&id!==''&&id!==null&&id!==undefined){
+        Service.update({nombre:nombre}, {where:{id:id}}).then(serviceUpdated => {
             if(serviceUpdated){
                 Service.findOne({where:{id:id}}).then(serviceFound => {
                     res.status(200).send(serviceFound);

@@ -2,30 +2,30 @@
 
 let Sequelize = require('sequelize');
 let WebfleetCredentials = require('./webfleetCredentials')
-let Service = require('./service')
+let PermitService = require('./permitService');
 
-const sequelize =  new Sequelize('Usuarios1', 'sa', 'LuisEduardo1997', {
+const sequelize =  new Sequelize('Usuarios', 'SA', 'Inroute2019', {
     host: 'localhost',
     dialect: 'mssql'
 });
 
-let Permissions = sequelize.define('Permissions', {
+let Permissions = sequelize.define('PermisosCredenciales', {
     id:{
         type: Sequelize.INTEGER, 
         primaryKey: true, 
         autoIncrement: true
     },
-    webfleetCredentials:{
+    servicioPermitido:{
         type: Sequelize.INTEGER,
         references:{
-            model: WebfleetCredentials,
+            model: PermitService,
             key: 'id'
         }
     },
-    service:{
+    credencial:{
         type: Sequelize.INTEGER,
         references:{
-            model: Service,
+            model: WebfleetCredentials,
             key: 'id'
         }
     }

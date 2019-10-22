@@ -2,18 +2,18 @@
 
 let Sequelize = require('sequelize');
 
-const sequelize =  new Sequelize('Usuarios1', 'sa', 'LuisEduardo1997', {
+const sequelize =  new Sequelize('Usuarios', 'SA', 'Inroute2019', {
     host: 'localhost',
     dialect: 'mssql'
 });
 
-let Service =  sequelize.define('Service', {
+let Service =  sequelize.define('Servicio', {
     id:{
         type: Sequelize.INTEGER,
         primaryKey: true, 
         autoIncrement: true
     },
-    name:{
+    nombre:{
         type: Sequelize.STRING, 
         allowNull: false
     }
@@ -21,3 +21,4 @@ let Service =  sequelize.define('Service', {
 
 sequelize.sync();
 module.exports = Service;
+

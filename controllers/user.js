@@ -5,7 +5,7 @@ let Sequelize = require("sequelize");
 let jwt = require('../services/jwt')
 let bcrypt = require('bcrypt-nodejs')
 
-const sequelize = new Sequelize("Usuarios1", "sa", "LuisEduardo1997", {
+const sequelize = new Sequelize("Usuarios", "SA", "Inroute2019", {
   host: "localhost",
   dialect: "mssql"
 });
@@ -93,7 +93,7 @@ function getUsers(req, res){
         if(usersFound){
             res.status(200).send(usersFound);
         }else{
-            res.status(200).send({errorCode:404, message: 'No se han encontrado usuarios'});
+            res.status(200).send({errorCode:404, message: 'No se han encontrado Usuarios'});
         }
     })
 }
