@@ -1,12 +1,12 @@
 'use strict'
 
 let app = require('./app');
-let port = 8002;
+let port = 8005;
 const Sequelize = require('sequelize');
 
-const sequelize =  new Sequelize('Usuarios', 'SA', 'Inroute2019', {
-    host: 'localhost',
-    dialect: 'mssql'
+const sequelize = new Sequelize("Usuarios", "sa", "LuisEduardo1997", {
+    host: "localhost",
+    dialect: "mssql"
 });
 
 sequelize.authenticate().then(()=>{

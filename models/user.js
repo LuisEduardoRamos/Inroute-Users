@@ -2,9 +2,9 @@
 
 let Sequelize = require('sequelize');
 
-const sequelize =  new Sequelize('Usuarios', 'SA', 'Inroute2019', {
-    host: 'localhost',
-    dialect: 'mssql'
+const sequelize = new Sequelize("Usuarios", "sa", "LuisEduardo1997", {
+    host: "localhost",
+    dialect: "mssql"
 });
 
 let User = sequelize.define('User',  {

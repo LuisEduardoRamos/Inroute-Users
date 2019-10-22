@@ -4,11 +4,10 @@ let Sequelize = require('sequelize');
 let Service = require('./service');
 let Client = require ('./client');
 
-const sequelize =  new Sequelize('Usuarios', 'SA', 'Inroute2019', {
-    host: 'localhost',
-    dialect: 'mssql'
+const sequelize = new Sequelize("Usuarios", "sa", "LuisEduardo1997", {
+    host: "localhost",
+    dialect: "mssql"
 });
-
 let PermitService =  sequelize.define('ServiciosPermitido', {
     id:{
         type: Sequelize.INTEGER,

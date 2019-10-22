@@ -4,9 +4,9 @@ let Sequelize = require('sequelize');
 let Client = require('./client');
 let User = require('./user');
 
-const sequelize =  new Sequelize('Usuarios', 'SA', 'Inroute2019', {
-    host: 'localhost',
-    dialect: 'mssql'
+const sequelize = new Sequelize("Usuarios", "sa", "LuisEduardo1997", {
+    host: "localhost",
+    dialect: "mssql"
 });
 
 let UserAssigned = sequelize.define('UserAssigned', {

@@ -4,9 +4,9 @@ let Sequelize = require('sequelize');
 let Client = require('./client')
 
 
-const sequelize =  new Sequelize('Usuarios', 'SA', 'Inroute2019', {
-    host: 'localhost',
-    dialect: 'mssql'
+const sequelize = new Sequelize("Usuarios", "sa", "LuisEduardo1997", {
+    host: "localhost",
+    dialect: "mssql"
 });
 
 let WebfleetCredentials = sequelize.define('Credencial', {

@@ -10,7 +10,7 @@ let jwt = require('../services/jwt');
 let Sequelize = require('sequelize');
 let URL_WEBFLEET = 'https://csv.telematics.tomtom.com/extern?lang=en&outputformat=json&useUTF8=True&range_pattern=ud';
 
-const sequelize = new Sequelize("Usuarios", "SA", "Inroute2019", {
+const sequelize = new Sequelize("Usuarios", "sa", "LuisEduardo1997", {
     host: "localhost",
     dialect: "mssql"
 });

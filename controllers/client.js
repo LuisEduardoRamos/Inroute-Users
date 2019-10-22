@@ -7,7 +7,7 @@ let path = require('path');
 let jwt = require('../services/jwt')
 let bcrypt = require('bcrypt-nodejs')
 
-const sequelize = new Sequelize("Usuarios", "SA", "Inroute2019", {
+const sequelize = new Sequelize("Usuarios", "sa", "LuisEduardo1997", {
     host: "localhost",
     dialect: "mssql"
 });
