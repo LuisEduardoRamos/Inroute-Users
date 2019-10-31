@@ -4,12 +4,13 @@ let Permissions = require('../models/permissions');
 let WebfleetCredentials = require('../models/webfleetCredentials');
 let PermitService = require('../models/permitService');
 let Sequelize = require('sequelize');
+require('dotenv').config()
 
-const sequelize = new Sequelize("Usuarios", "sa", "LuisEduardo1997", {
+
+const sequelize = new Sequelize(process.env.DB_NAME,process.env.DB_USER, process.env.DB_PASS, {
     host: "localhost",
     dialect: "mssql"
 });
-
 function savePermission(req, res){
     let permission = {};
     let params = req.body;

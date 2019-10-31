@@ -9,8 +9,9 @@ let axios = require('axios');
 let jwt = require('../services/jwt');
 let Sequelize = require('sequelize');
 let URL_WEBFLEET = 'https://csv.telematics.tomtom.com/extern?lang=en&outputformat=json&useUTF8=True&range_pattern=ud';
+require('dotenv').config()
 
-const sequelize = new Sequelize("Usuarios", "sa", "LuisEduardo1997", {
+const sequelize = new Sequelize(process.env.DB_NAME,process.env.DB_USER, process.env.DB_PASS, {
     host: "localhost",
     dialect: "mssql"
 });
@@ -22,10 +23,12 @@ function saveCredentials(req, res){
     credentials.usuario = params.usuario;
     credentials.password = params.password;
     credentials.cliente = params.cliente;
+    credentials.role = params.role;
     console.log(credentials);
     if(params.usuario!==null&&params.usuario!==''&&params.usuario!==undefined&& 
        params.password!==null&&params.password!==''&&params.password!==undefined&&
-       params.cliente!==null&&params.cliente!==''&&params.cliente!==undefined){
+       params.cliente!==null&&params.cliente!==''&&params.cliente!==undefined&&
+       params.rol!==null&&params.rol!==''&&params.rol!==undefined){
         sequelize.sync().then(()=>{
             Credentials.create(credentials).then(credentialsCreated => {
                 if(credentialsCreated){
@@ -107,11 +110,13 @@ async function loginWebfleet(credentials){
         else if(data.errorCode === 8014){
             return{errorCode:404, message: 'El usuario no cuenta con permisos de webfleet connect. Verficar en la plataforma de weblfeet.'};
         }else{
+            
             let tokenObj = {
                 cuenta: credentials.cuenta,
                 usuario: credentials.usuario,
                 password: credentials.password,
-                apikey: credentials.apikey
+                apikey: credentials.apikey,
+                role: credentials.role
             }
             console.log(tokenObj);
             return {token: jwt.createTokenCredentials(tokenObj)};
@@ -131,7 +136,7 @@ function login(req, res){
        password!==''&&password!==null&&password!==undefined&&
        account!==''&&account!==null&&account!==undefined &&
        service!==''&&service!==null&&service!==undefined){
-        
+        let role=null;
         Client.findOne({where:{cuenta: account}}).then( 
             clientFound =>{
                 if(clientFound){
@@ -140,15 +145,36 @@ function login(req, res){
                        async permitServiceFound => {
                             if(permitServiceFound){
                                 if(permitServiceFound.webfleet){
-                                    let credenciales = {
-                                        cuenta: clientFound.cuenta,
-                                        usuario: user,
-                                        password:password ,
-                                        apikey: clientFound.apikey
-                                    }
-                                    let resObj = await loginWebfleet(credenciales);
-                                    console.log(resObj);
-                                    res.status(200).send(resObj);
+                                    let credenciales = {};
+                                    let resObj ={};
+                                    Credentials.findOne({where:{cliente: clientFound.id,usuario: user}}).then(
+                                        async credFound => {
+                                            if(credFound){
+                                                credenciales = {
+                                                    cuenta: clientFound.cuenta,
+                                                    usuario: user,
+                                                    password:password ,
+                                                    apikey: clientFound.apikey,
+                                                    role: credFound.role
+                                                }
+                                                resObj = await loginWebfleet(credenciales);
+                                                console.log(resObj);
+                                                res.status(200).send(resObj);
+                                            }else{
+                                                credenciales = {
+                                                    cuenta: clientFound.cuenta,
+                                                    usuario: user,
+                                                     password:password ,
+                                                    apikey: clientFound.apikey,
+                                                    role: null
+                                                }
+                                                resObj = await loginWebfleet(credenciales);
+                                                console.log(resObj);
+                                                res.status(200).send(resObj);
+                                            }
+                                        }
+                                    )
+                                
                                 } else{
                                     Credentials.findOne({where:{cliente:clientFound.id, usuario: user }}).then(
                                         credentialsFound => {
@@ -157,11 +183,13 @@ function login(req, res){
                                                    async permissionFound => {
                                                         if(permissionFound){
                                                             if(credentialsFound.password === password){
+                                                                console.log(credentialsFound);
                                                                 let credenciales = {
                                                                     cuenta: clientFound.cuenta,
                                                                     usuario: credentialsFound.usuario,
                                                                     password:credentialsFound.password ,
-                                                                    apikey: clientFound.apikey
+                                                                    apikey: clientFound.apikey,
+                                                                    role: credentialsFound.role
                                                                 }
                                                                 let resObj = await loginWebfleet(credenciales);
                                                                 res.status(200).send(resObj);

@@ -2,7 +2,7 @@
 
 let Sequelize = require('sequelize');
 
-const sequelize = new Sequelize("Usuarios", "sa", "LuisEduardo1997", {
+const sequelize = new Sequelize("Usuarios", "sa", "Inroute2019", {
     host: "localhost",
     dialect: "mssql"
 });

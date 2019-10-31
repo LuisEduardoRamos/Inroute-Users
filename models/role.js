@@ -7,7 +7,7 @@ const sequelize = new Sequelize("Usuarios", "sa", "Inroute2019", {
     dialect: "mssql"
 });
 
-let User = sequelize.define('User',  {
+let Role = sequelize.define('Role',  {
     id:{
         type: Sequelize.INTEGER,
         primaryKey: true, 
@@ -17,23 +17,11 @@ let User = sequelize.define('User',  {
         type: Sequelize.STRING,
         allowNull: false
     },
-    rol:{
+    description: {
         type: Sequelize.STRING,
         allowNull: false
-    },
-    email:{
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    password:{
-        type: Sequelize.STRING, 
-        allowNull: false
-    },
-    image:{
-        type: Sequelize.STRING,
-        allowNull: true
     }
 });
 
 sequelize.sync();
-module.exports = User
+module.exports = Role
