@@ -2,7 +2,8 @@
 
 var jwt = require('jwt-simple')
 var moment = require('moment')
-var secret = 'inrouteusuarios'
+require('dotenv').config()
+var secret = process.env.TOKEN_PASS
 
 exports.ensureAuth = function(req, res, next){
     if(!req.headers.authorization){

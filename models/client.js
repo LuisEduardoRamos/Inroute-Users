@@ -1,31 +1,35 @@
 'use strict'
 
 let Sequelize = require('sequelize');
-
-const sequelize =  new Sequelize('Usuarios1', 'sa', 'LuisEduardo1997', {
-    host: 'localhost',
-    dialect: 'mssql'
+require('dotenv').config()
+const sequelize = new Sequelize(process.env.DB_NAME,process.env.DB_USER, process.env.DB_PASS, {
+    host: "localhost",
+    dialect: "mssql"
 });
 
-let Client = sequelize.define('Client', {
+let Client = sequelize.define('Cliente', {
     id:{
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    name:{
+    nombre:{
         type: Sequelize.STRING,
         allowNull: false
     },
-    email:{ 
+    correo:{ 
         type: Sequelize.STRING, 
         allowNull: false
     },
-    password:{
+    imagen:{
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
     },
-    image:{
+    cuenta:{
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    apikey:{
         type: Sequelize.STRING,
         allowNull: true
     }

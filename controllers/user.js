@@ -4,12 +4,13 @@ let User = require("../models/user");
 let Sequelize = require("sequelize");
 let jwt = require('../services/jwt')
 let bcrypt = require('bcrypt-nodejs')
+require('dotenv').config()
 
-const sequelize = new Sequelize("Usuarios1", "sa", "LuisEduardo1997", {
-  host: "localhost",
-  dialect: "mssql"
+
+const sequelize = new Sequelize(process.env.DB_NAME,process.env.DB_USER, process.env.DB_PASS, {
+    host: "localhost",
+    dialect: "mssql"
 });
-
 function saveUser(req, res) {
   let params = req.body;
   let user = {};
@@ -93,7 +94,7 @@ function getUsers(req, res){
         if(usersFound){
             res.status(200).send(usersFound);
         }else{
-            res.status(200).send({errorCode:404, message: 'No se han encontrado usuarios'});
+            res.status(200).send({errorCode:404, message: 'No se han encontrado Usuarios'});
         }
     })
 }

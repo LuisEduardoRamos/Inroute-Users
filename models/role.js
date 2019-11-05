@@ -8,18 +8,21 @@ const sequelize = new Sequelize(process.env.DB_NAME,process.env.DB_USER, process
     dialect: "mssql"
 });
 
-let Service =  sequelize.define('Servicio', {
+let Role = sequelize.define('Role',  {
     id:{
         type: Sequelize.INTEGER,
         primaryKey: true, 
         autoIncrement: true
     },
-    nombre:{
-        type: Sequelize.STRING, 
+    name:{
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    description: {
+        type: Sequelize.STRING,
         allowNull: false
     }
 });
 
 sequelize.sync();
-module.exports = Service;
-
+module.exports = Role

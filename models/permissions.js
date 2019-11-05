@@ -2,30 +2,31 @@
 
 let Sequelize = require('sequelize');
 let WebfleetCredentials = require('./webfleetCredentials')
-let Service = require('./service')
+let PermitService = require('./permitService');
+require('dotenv').config()
 
-const sequelize =  new Sequelize('Usuarios1', 'sa', 'LuisEduardo1997', {
-    host: 'localhost',
-    dialect: 'mssql'
+const sequelize = new Sequelize(process.env.DB_NAME,process.env.DB_USER, process.env.DB_PASS, {
+    host: "localhost",
+    dialect: "mssql"
 });
 
-let Permissions = sequelize.define('Permissions', {
+let Permissions = sequelize.define('PermisosCredenciales', {
     id:{
         type: Sequelize.INTEGER, 
         primaryKey: true, 
         autoIncrement: true
     },
-    webfleetCredentials:{
+    servicioPermitido:{
         type: Sequelize.INTEGER,
         references:{
-            model: WebfleetCredentials,
+            model: PermitService,
             key: 'id'
         }
     },
-    service:{
+    credencial:{
         type: Sequelize.INTEGER,
         references:{
-            model: Service,
+            model: WebfleetCredentials,
             key: 'id'
         }
     }

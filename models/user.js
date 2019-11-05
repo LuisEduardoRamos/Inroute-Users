@@ -1,10 +1,11 @@
 'use strict'
 
 let Sequelize = require('sequelize');
+require('dotenv').config()
 
-const sequelize =  new Sequelize('Usuarios1', 'sa', 'LuisEduardo1997', {
-    host: 'localhost',
-    dialect: 'mssql'
+const sequelize = new Sequelize(process.env.DB_NAME,process.env.DB_USER, process.env.DB_PASS, {
+    host: "localhost",
+    dialect: "mssql"
 });
 
 let User = sequelize.define('User',  {

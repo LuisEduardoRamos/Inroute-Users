@@ -6,8 +6,10 @@ let fs = require('fs');
 let path = require('path');
 let jwt = require('../services/jwt')
 let bcrypt = require('bcrypt-nodejs')
+require('dotenv').config()
 
-const sequelize = new Sequelize("Usuarios1", "sa", "LuisEduardo1997", {
+
+const sequelize = new Sequelize(process.env.DB_NAME,process.env.DB_USER, process.env.DB_PASS, {
     host: "localhost",
     dialect: "mssql"
 });
@@ -16,32 +18,26 @@ function saveClient(req, res){
     let client = {}
     let params = req.body;
 
-    client.name = params.name;
-    client.email = params.email;
-    client.password = params.password;
+    client.nombre = params.nombre;
+    client.correo = params.correo;
     client.image = '';
-
-    if(params.password){
-        bcrypt.hash(params.password, null, null, (err, hash)=>{
-            client.password = hash;
-            console.log(client)
-            if(client.name!==null&&client.email!==null&&client.password!==null&&client.name!==''&&client.email!==''
-            &&client.password!==''&&client.name!==undefined&&client.email!==undefined&&client.password!==undefined){
-                sequelize.sync().then(()=>{
-                    Client.create(client).then(clientCreated=>{
-                        if(clientCreated){
-                            res.status(200).send(clientCreated)
-                        }else{
-                            res.status(200).send({errorCode: 404, message:'El cliente nos se ha creado'})
-                        }
-                    });
-                });
-            }else{
-                res.status(200).send({errorCode:403, message: 'Introduzca todos los datos'})
-            }
+    client.cuenta = params.cuenta;
+    client.apikey = params.apikey;
+    console.log(client)
+    if(client.nombre!==null && client.nombre!==''&& client.nombre!==undefined &&
+        client.correo!==null && client.correo!=='' && client.correo!==undefined){
+        sequelize.sync().then(()=>{
+            Client.create(client).then(clientCreated=>{
+                if(clientCreated){
+                    res.status(200).send(clientCreated)
+                }else{
+                    res.status(200).send({errorCode: 404, message:'El cliente nos se ha creado'})
+                }
+            });
         });
-    }else{
-        res.status(200).send({errorCode: 403, message: 'Ingrese la contraseña'})
+    }
+    else{
+        res.status(200).send({errorCode:403, message: 'Introduzca todos los datos'})
     }
     
 }
@@ -121,7 +117,7 @@ function uploadImage(req, res){
         let file_ext = ext_split[1];
         if(file_ext == 'png'|| file_ext == 'jpg'|| file_ext == 'gif'){
             sequelize.sync().then(()=>{
-                Client.update({image: file_name}, {where:{id: userId}}).then(userUpdated => {
+                Client.update({imagen: file_name}, {where:{id: userId}}).then(userUpdated => {
                     if(userUpdated){
                         console.log(userUpdated)
                         res.status(200).send(userUpdated);
