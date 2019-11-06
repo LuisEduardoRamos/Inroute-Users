@@ -10,5 +10,6 @@ api.get('/get-credential/:id', Credentials.getCredential);
 api.get('/get-credentials', Credentials.getCredentials);
 api.get('/get-credentials/:id', Credentials.getCredentialsByClient);
 api.post('/login', Credentials.login);
+api.get('/get-role-credentials-by-service', Credentials.getRoleCredentialsByService);
 
 module.exports = api;

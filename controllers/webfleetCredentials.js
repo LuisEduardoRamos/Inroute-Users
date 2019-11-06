@@ -219,5 +219,20 @@ function login(req, res){
            res.status(200).send({errorCode:403, message: 'Ingrese todos los datos'});
        }
 }
-
-module.exports = { saveCredentials, editCredentials, getCredential, getCredentialsByClient, getCredentials, login };
+async function getRoleCredentialsByService(req, res){
+    console.log(req.query);
+    let role= req.query.rol;
+    let service = req.query.servicio;
+    try{
+        let result = await sequelize.query(`SELECT cuenta, usuario, password, apikey FROM Clientes c JOIN ServiciosPermitidos sp ON c.id = sp.cliente JOIN Credencials cred ON cred.cliente = c.id WHERE cred.role=${role} AND sp.servicio=${service}`);
+        console.log(result[0]);
+        if(result[0]){
+            res.status(200).send(result[0]);
+        }else{
+            res.status(200).send([]);
+        }
+    } catch(err){
+        res.status(200).send({errorCode:500, message: 'Ocurrio un error al hacer la consulta'});
+    }
+}
+module.exports = { saveCredentials, editCredentials, getCredential, getCredentialsByClient, getCredentials, login, getRoleCredentialsByService };
