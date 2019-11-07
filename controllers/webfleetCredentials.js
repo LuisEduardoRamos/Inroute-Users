@@ -23,7 +23,7 @@ function saveCredentials(req, res){
     credentials.usuario = params.usuario;
     credentials.password = params.password;
     credentials.cliente = params.cliente;
-    credentials.role = params.role;
+    credentials.role = params.rol;
     console.log(credentials);
     if(params.usuario!==null&&params.usuario!==''&&params.usuario!==undefined&& 
        params.password!==null&&params.password!==''&&params.password!==undefined&&
