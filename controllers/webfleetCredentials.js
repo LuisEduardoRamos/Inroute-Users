@@ -225,7 +225,6 @@ async function getRoleCredentialsByService(req, res){
     let service = req.query.servicio;
     try{
         let result = await sequelize.query(`SELECT cuenta, usuario, password, apikey FROM Clientes c JOIN ServiciosPermitidos sp ON c.id = sp.cliente JOIN Credencials cred ON cred.cliente = c.id WHERE cred.role=${role} AND sp.servicio=${service}`);
-        console.log(result[0]);
         if(result[0]){
             res.status(200).send(result[0]);
         }else{
