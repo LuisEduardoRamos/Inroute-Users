@@ -201,7 +201,7 @@ function login(req, res){
                                                         }
                                                     })               
                                             }else{
-                                                res.status(200).send({errorCode:404, message: `El ${user} no se encuentra registrado.`})  
+                                                res.status(200).send({errorCode:404, message: `El usuario ${user} no se encuentra registrado para usar este servicio.`})  
                                             }
                                         }
                                     )
