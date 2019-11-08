@@ -7,7 +7,7 @@ let api = express.Router();
 api.post('/save-permission', PermissionsController.savePermission);
 api.put('/edit-permission/;id', PermissionsController.editPermission);
 api.get('/get-permission/:id', PermissionsController.getPermission);
-api.get('/get-permissions/:id', PermissionsController.getPemrissions);
+api.get('/get-permissions', PermissionsController.getPermissions);
 api.get('/get-permission-client/:id', PermissionsController.getPermissionsByClient);
 api.delete('/delete-permission/:id', PermissionsController.deletePermission);
 
