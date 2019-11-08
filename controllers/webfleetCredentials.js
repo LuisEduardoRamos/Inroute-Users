@@ -179,7 +179,7 @@ function login(req, res){
                                     Credentials.findOne({where:{cliente:clientFound.id, usuario: user }}).then(
                                         credentialsFound => {
                                             if(credentialsFound){
-                                                Permissions.findOne({where:{ servicioPermitido:permitServiceFound.id,credencial: credentialsFound.id}}).then(
+                                                Permissions.findOne({where:{ servicioPermitido:permitServiceFound.servicio,credencial: credentialsFound.id}}).then(
                                                    async permissionFound => {
                                                         if(permissionFound){
                                                             if(credentialsFound.password === password){
@@ -201,13 +201,13 @@ function login(req, res){
                                                         }
                                                     })               
                                             }else{
-                                                res.status(200).send({errorCode:404, message: `El usuario ${user} no se encuentra registrado para usar este servicio.`})  
+                                                res.status(200).send({errorCode:404, message: `El usuario no se encuentra registrado para usar este servicio.`})  
                                             }
                                         }
                                     )
                                 }
                             }else{
-                                res.status(200).send({errorCode:404, message: `La cuenta ${cuenta} no cuenta con acceso a ${service}. Favor de contactarse con Inroute para más información.`})  
+                                res.status(200).send({errorCode:404, message: `La cuenta no cuenta con acceso a este servicio. Favor de contactarse con Inroute para más información.`})  
                             }
                         }
                     )

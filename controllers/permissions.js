@@ -96,7 +96,7 @@ function getPermission(req, res){
     }
 }
 
-function getPemrissions(req, res){
+function getPermissions(req, res){
     Permissions.findAll().then(permissionsFound => {
         if(permissionsFound){
             res.status(200).send(permissionsFound);
@@ -136,4 +136,4 @@ function deletePermission(req, res){
     }
 }
 
-module.exports = { savePermission, editPermission, getPemrissions, getPermission, getPermissionsByClient, deletePermission };
+module.exports = { savePermission, editPermission, getPermissions, getPermission, getPermissionsByClient, deletePermission };
