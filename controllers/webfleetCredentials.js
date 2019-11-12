@@ -119,7 +119,7 @@ async function loginWebfleet(credentials){
                 role: credentials.role
             }
             console.log(tokenObj);
-            return {token: jwt.createTokenCredentials(tokenObj)};
+            return {token: jwt.createTokenCredentials(tokenObj), role: credentials.role};
         }
     }catch(err){
         return {errorCode:500, message: 'No se pudo realizar el login con webfleet.'};
