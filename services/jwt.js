@@ -28,6 +28,7 @@ exports.createTokenCredentials = function(credentials) {
     usuario: credentials.usuario, 
     password: credentials.password,
     apikey: credentials.apikey,
+    imagen: credentials.imagen,
     role: credentials.role,
     iat: moment().unix(),
     exp: moment()
