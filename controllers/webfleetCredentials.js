@@ -114,6 +114,7 @@ async function loginWebfleet(credentials){
             let tokenObj = {
                 cuenta: credentials.cuenta,
                 usuario: credentials.usuario,
+                imagen: credentials.imagen,
                 password: credentials.password,
                 apikey: credentials.apikey,
                 role: credentials.role
@@ -155,6 +156,7 @@ function login(req, res){
                                                     usuario: user,
                                                     password:password ,
                                                     apikey: clientFound.apikey,
+                                                    imagen: clientFound.imagen,
                                                     role: credFound.role
                                                 }
                                                 resObj = await loginWebfleet(credenciales);
@@ -166,6 +168,7 @@ function login(req, res){
                                                     usuario: user,
                                                      password:password ,
                                                     apikey: clientFound.apikey,
+                                                    imagen: clientFound.imagen ,
                                                     role: null
                                                 }
                                                 resObj = await loginWebfleet(credenciales);
@@ -188,6 +191,7 @@ function login(req, res){
                                                                     cuenta: clientFound.cuenta,
                                                                     usuario: credentialsFound.usuario,
                                                                     password:credentialsFound.password ,
+                                                                    imagen: clientFound.imagen,
                                                                     apikey: clientFound.apikey,
                                                                     role: credentialsFound.role
                                                                 }

@@ -145,5 +145,16 @@ function getImageFile(req, res){
         }
     });
 }
+function getImageFileByToken(req, res){
+    let imageFile = req.user.imagen;
+    let path_file = "./uploads/" + imageFile;
+    fs.exists(path_file, function(exists){
+        if (exists) {
+            res.sendFile(path.resolve(path_file));
+        }else {
+            res.status(200).send({ message: "No existe la imagen..." });
+        }
+    });
+}
 
-module.exports = { saveClient, editClient, getClient, getClients, deleteClient, uploadImage, getImageFile };
+module.exports = { saveClient, editClient, getClient, getClients, deleteClient, uploadImage, getImageFile, getImageFileByToken };
