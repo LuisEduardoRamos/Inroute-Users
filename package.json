@@ -17,6 +17,7 @@
     "connect-multiparty": "^2.2.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jimp": "^0.8.5",
     "jwt-simple": "^0.5.6",
     "moment": "^2.24.0",
     "mssql": "^5.1.0",

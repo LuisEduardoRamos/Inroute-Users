@@ -5,7 +5,7 @@ let Sequelize = require('sequelize');
 let fs = require('fs');
 let path = require('path');
 let jwt = require('../services/jwt')
-let bcrypt = require('bcrypt-nodejs')
+let bcrypt = require('bcrypt-nodejs');
 require('dotenv').config()
 
 
