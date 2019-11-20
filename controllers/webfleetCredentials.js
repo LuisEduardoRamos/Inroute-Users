@@ -111,7 +111,7 @@ async function loginWebfleet(credentials){
             return{errorCode:404, message: 'El usuario no cuenta con permisos de webfleet connect. Verficar en la plataforma de weblfeet.'};
         }else{
             
-            let tokenObj = {
+            let usuario = {
                 cuenta: credentials.cuenta,
                 usuario: credentials.usuario,
                 imagen: credentials.imagen,
@@ -119,8 +119,7 @@ async function loginWebfleet(credentials){
                 apikey: credentials.apikey,
                 role: credentials.role
             }
-            console.log(tokenObj);
-            return {token: jwt.createTokenCredentials(tokenObj), role: credentials.role};
+            return {token: jwt.createTokenCredentials(usuario), usuario};
         }
     }catch(err){
         return {errorCode:500, message: 'No se pudo realizar el login con webfleet.'};
