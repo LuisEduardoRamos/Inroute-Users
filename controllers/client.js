@@ -150,7 +150,7 @@ function getImageFileByToken(req, res){
     let path_file = "./uploads/" + imageFile;
     fs.exists(path_file, function(exists){
         if (exists) {
-            res.sendFile(path.resolve(path_file));
+            res.status(200).send({image: req.user.imagen});
         }else {
             res.status(200).send({ message: "No existe la imagen..." });
         }
